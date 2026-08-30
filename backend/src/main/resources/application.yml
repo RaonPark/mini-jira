@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: mini-jira
+
+  datasource:
+    url: jdbc:postgresql://localhost:55432/minijira
+    username: minijira
+    password: minijira
+
+  jpa:
+    hibernate:
+      # 스키마의 주인은 Flyway 하나뿐이다.
+      # validate = 엔티티와 실제 스키마가 어긋나면 부팅 시점에 즉시 실패한다.
+      # 절대 update / create 로 바꾸지 말 것 (Hibernate 가 몰래 스키마를 바꿔 Flyway 와 어긋난다)
+      ddl-auto: validate
+    # 컨트롤러에서 lazy 로딩되는 걸 막아 N+1 을 일찍 발견한다
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+
+  jooq:
+    sql-dialect: POSTGRES
+
+logging:
+  level:
+    # JPA 가 날리는 SQL 과 jOOQ 가 날리는 SQL 을 나란히 보기 위한 설정
+    org.hibernate.SQL: DEBUG
+    org.jooq.tools.LoggerListener: DEBUG
