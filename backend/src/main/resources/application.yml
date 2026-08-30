@@ -1,3 +1,8 @@
+server:
+  # 8080 은 로컬에서 다른 게 자주 물고 있어 8070 을 쓴다.
+  # 이 값을 바꾸면 frontend/vite.config.ts 의 proxy 대상도 같이 바꿔야 한다.
+  port: 8070
+
 spring:
   application:
     name: mini-jira

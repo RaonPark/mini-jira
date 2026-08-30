@@ -1,49 +1,58 @@
-HELP.md
-.gradle
+# =========================================================================
+# Mini Jira — 모노레포
+#   backend  : Gradle + Kotlin + Spring Boot
+#   frontend : Vite + React + TypeScript
+# =========================================================================
+
+### Gradle / JVM ###
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+.kotlin/
+*.class
+HELP.md
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# jOOQ 생성 코드(backend/build/generated-sources/jooq)는 위 build/ 로 이미 제외된다.
+# 커밋하지 않고 `gradlew :backend:jooqCodegen` 으로 매번 생성한다.
+# 스키마와 어긋난 코드가 저장소에 남는 사고를 원천적으로 막기 위한 선택이다.
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
-
-### Kotlin ###
-.kotlin
-
-### frontend / node ###
+### Node / Vite ###
 node_modules/
 dist/
+dist-ssr/
 .vite/
+*.tsbuildinfo
 *.local
 
-### misc ###
+
+### 로그 ###
+*.log
+logs/
+
+
+### 환경변수 · 비밀값 ###
+# 실제 값이 든 .env 는 절대 커밋하지 않는다.
+# 대신 키 목록만 담은 .env.example 을 커밋해 팀원이 무엇을 채워야 하는지 알게 한다.
+.env
+.env.*
+!.env.example
+
+
+### IDE ###
 .idea/
+*.iml
+*.ipr
+*.iws
+out/
+.vscode/
+!.vscode/extensions.json
+
+# Eclipse(STS) / NetBeans 항목은 쓰지 않으므로 제거했다.
+# 나중에 필요해지면 https://github.com/github/gitignore 에서 가져올 것.
+
+
+### OS ###
+.DS_Store
+Thumbs.db
+Desktop.ini
