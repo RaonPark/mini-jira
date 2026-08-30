@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: mini-jira-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: minijira
+      POSTGRES_USER: minijira
+      POSTGRES_PASSWORD: minijira
+      TZ: Asia/Seoul
+      # 한글 정렬/비교를 위한 초기화 옵션 (initdb 최초 1회만 적용됨)
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      # 로컬에 이미 5432 를 쓰는 DB 가 있을 수 있어 55432 로 내보낸다
+      - "55432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # 이게 healthy 가 되고 나서 flywayMigrate 를 돌려야 한다
+      test: ["CMD-SHELL", "pg_isready -U minijira -d minijira"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
