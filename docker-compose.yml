@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: mini-jira-db
     restart: unless-stopped
     environment:
@@ -14,7 +14,11 @@ services:
       # 로컬에 이미 5432 를 쓰는 DB 가 있을 수 있어 55432 로 내보낸다
       - "55432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      # PG 18+ 공식 이미지는 데이터 디렉터리 레이아웃이 바뀌었다.
+      # /var/lib/postgresql 에 마운트하면 PG 가 그 안에 메이저 버전별
+      # 하위 디렉터리(18/docker)를 만든다. 예전처럼 .../data 에 걸면
+      # "in 18+, these Docker images are configured to..." 로 컨테이너가 죽는다.
+      - pgdata:/var/lib/postgresql
     healthcheck:
       # 이게 healthy 가 되고 나서 flywayMigrate 를 돌려야 한다
       test: ["CMD-SHELL", "pg_isready -U minijira -d minijira"]
