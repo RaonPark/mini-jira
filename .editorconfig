@@ -1,0 +1,41 @@
+# 최상위 설정 — 상위 폴더 탐색을 여기서 멈춘다
+root = true
+
+# =========================================================================
+# 이 파일이 IDE 전역 설정을 덮어쓴다.
+# IntelliJ 전역이 '탭'으로 되어 있어도 이 프로젝트에서는 아래 규칙이 이긴다.
+# (다른 실무 프로젝트의 탭 설정은 그대로 유지된다)
+# =========================================================================
+
+[*]
+charset = utf-8
+indent_style = space
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# end_of_line 은 일부러 지정하지 않는다.
+# git 의 core.autocrlf=true 가 이미 줄바꿈을 관리하고 있어서,
+# 여기서 lf 로 강제하면 IDE 와 git 이 같은 파일을 서로 다시 쓰며 계속 부딪친다.
+
+
+### 프론트엔드 — JS/TS 생태계 관례는 2칸 (Prettier 기본값) ###
+[*.{ts,tsx,js,jsx,mjs,cjs,json,css,scss,html,svg}]
+indent_size = 2
+
+
+### 백엔드 — Kotlin 공식 스타일 가이드는 4칸 ###
+[*.{kt,kts,java}]
+indent_size = 4
+
+[*.sql]
+indent_size = 4
+
+
+### YAML 은 탭을 문법적으로 허용하지 않는다 ###
+[*.{yml,yaml}]
+indent_size = 2
+
+
+### 마크다운은 줄 끝 공백 2개가 '줄바꿈' 의미를 가지므로 지우면 안 된다 ###
+[*.md]
+trim_trailing_whitespace = false
