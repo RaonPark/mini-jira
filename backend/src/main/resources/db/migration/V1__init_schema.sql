@@ -22,11 +22,12 @@ language plpgsql;
 -- -------------------------------------------------------------------------
 create table app_user
 (
-    id           bigserial primary key,
+    id           uuid primary key,
     name         varchar(50)  not null,
     email        varchar(255) not null,
     avatar_color varchar(7)   not null default '#6B7280', -- 이니셜 아바타 배경색 (#RRGGBB)
     created_at   timestamptz  not null default now(),
+    updated_at   timestamptz  not null default now(),
 
     constraint uq_app_user_email unique (email)
 );
@@ -41,12 +42,12 @@ create table app_user
 -- -------------------------------------------------------------------------
 create table task
 (
-    id          bigserial primary key,
+    id          uuid primary key,
     title       varchar(200) not null,
     description text,
     status      varchar(20)  not null default 'TODO',
     priority    varchar(10)  not null default 'MEDIUM',
-    assignee_id bigint, -- null = 담당자 미지정
+    assignee_id uuid, -- null = 담당자 미지정
     created_at  timestamptz  not null default now(),
     updated_at  timestamptz  not null default now(),
 
@@ -59,10 +60,11 @@ create table task
         references app_user (id) on delete set null
 );
 
-create trigger trg_task_updated_at
-    before update
-    on task
-    for each row execute function set_updated_at();
+-- 만약 JPA Auditing 보다 트리거를 사용해야할 일이 있다면 트리거를 사용
+-- create trigger trg_task_updated_at
+--     before update
+--     on task
+--     for each row execute function set_updated_at();
 
 -- 목록 기본 정렬은 created_at desc.
 --   (status, created_at desc) : 상태 필터 + 정렬을 한 인덱스로 커버
@@ -79,11 +81,12 @@ create index idx_task_created_at on task (created_at desc);
 -- -------------------------------------------------------------------------
 create table task_comment
 (
-    id         bigserial primary key,
-    task_id    bigint      not null,
-    author_id  bigint      not null,
+    id         uuid primary key,
+    task_id    uuid        not null,
+    author_id  uuid        not null,
     content    text        not null,
     created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now(),
 
     constraint ck_comment_content_not_blank check (btrim(content) <> ''),
 
