@@ -52,6 +52,19 @@ jooq {
                 name = "org.jooq.meta.postgres.PostgresDatabase"
                 inputSchema = "public"
                 excludes = "flyway_schema_history"
+
+                forcedTypes {
+                    forcedType {
+                        userType = "org.raonpark.backend.task.enums.TaskStatus"
+                        isEnumConverter = true
+                        includeExpression = "public\\.task\\.status"
+                    }
+                    forcedType {
+                        userType = "org.raonpark.backend.task.enums.TaskPriority"
+                        isEnumConverter = true
+                        includeExpression = "public\\.task\\.priority"
+                    }
+                }
             }
             target {
                 packageName = "org.raonpark.backend.jooq"
