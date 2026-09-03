@@ -81,6 +81,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    // kotlin-logging : SLF4J 파사드. Boot 가 이미 붙여둔 logback 위에서 그대로 동작한다.
+    implementation("io.github.oshai:kotlin-logging-jvm:7.0.14")
     implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
     runtimeOnly("org.postgresql:postgresql")
