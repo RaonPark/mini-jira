@@ -1,5 +1,6 @@
 package org.raonpark.backend.task.dto
 
+import org.raonpark.backend.task.entity.TaskEntity
 import org.raonpark.backend.task.enums.TaskPriority
 import org.raonpark.backend.task.enums.TaskStatus
 import org.raonpark.backend.users.dto.UserSummary

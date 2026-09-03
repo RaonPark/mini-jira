@@ -2,9 +2,8 @@ package org.raonpark.backend.common.exceptions
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.ConstraintViolationException
-import org.raonpark.backend.task.exceptions.TaskNotFoundException
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -30,14 +29,10 @@ class GlobalExceptionHandler {
         )
     }
 
-    @ExceptionHandler(exception = [TaskNotFoundException::class])
-    fun taskNotFoundException(ex: TaskNotFoundException): ResponseEntity<APIError> {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-            APIError(
-                code = "TASK_NOT_FOUND",
-                message = "해당 작업을 찾을 수 없습니다.",
-            )
-        )
+    @ExceptionHandler(ApiException::class)
+    fun handleApiException(ex: ApiException): ResponseEntity<APIError> {
+        log.warn { "${ex.code} (${ex.message})" }
+        return ResponseEntity.status(ex.status).body(APIError(ex.code, ex.message))
     }
 
     @ExceptionHandler(exception = [MethodArgumentNotValidException::class])
@@ -71,4 +66,17 @@ class GlobalExceptionHandler {
                 ),
             )
         )
+
+    // 깨진 JSON, body 안의 잘못된 enum 값, body 누락 등.
+    // catch-all 에 두면 500 으로 나가서 클라이언트 잘못을 서버 장애로 오인하게 된다.
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException): ResponseEntity<APIError> {
+        log.warn { "Malformed request body: ${ex.mostSpecificCause.message}" }
+        return ResponseEntity.badRequest().body(
+            APIError(
+                code = "MALFORMED_REQUEST",
+                message = "요청 형식이 올바르지 않습니다.",
+            )
+        )
+    }
 }

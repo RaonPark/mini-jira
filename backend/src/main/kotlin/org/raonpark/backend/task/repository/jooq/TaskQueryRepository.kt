@@ -5,6 +5,7 @@ import org.jooq.DSLContext
 import org.jooq.Records
 import org.jooq.SortField
 import org.jooq.impl.DSL
+import org.raonpark.backend.common.exceptions.TaskNotFoundException
 import org.raonpark.backend.common.page.PageResponse
 import org.raonpark.backend.jooq.tables.AppUser.APP_USER
 import org.raonpark.backend.jooq.tables.Task.TASK
@@ -12,10 +13,9 @@ import org.raonpark.backend.jooq.tables.TaskComment.TASK_COMMENT
 import org.raonpark.backend.task.dto.TaskDetail
 import org.raonpark.backend.task.dto.TaskListItem
 import org.raonpark.backend.task.dto.TaskListQuery
-import org.raonpark.backend.task.exceptions.TaskNotFoundException
 import org.raonpark.backend.users.dto.UserSummary
 import org.springframework.stereotype.Repository
-import java.util.UUID
+import java.util.*
 
 @Repository
 class TaskQueryRepository(
