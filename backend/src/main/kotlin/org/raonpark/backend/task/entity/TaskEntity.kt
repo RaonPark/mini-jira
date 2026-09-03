@@ -1,23 +1,11 @@
 package org.raonpark.backend.task.entity
 
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.PostLoad
-import jakarta.persistence.PostPersist
-import jakarta.persistence.Table
-import jakarta.persistence.Transient
-import jakarta.validation.constraints.NotNull
+import jakarta.persistence.*
 import org.raonpark.backend.common.entity.BaseEntity
 import org.raonpark.backend.task.enums.TaskPriority
 import org.raonpark.backend.task.enums.TaskStatus
 import org.springframework.data.annotation.PersistenceCreator
-import org.springframework.data.domain.Persistable
-import java.util.UUID
+import java.util.*
 
 @Entity
 @Table(name = "task")
