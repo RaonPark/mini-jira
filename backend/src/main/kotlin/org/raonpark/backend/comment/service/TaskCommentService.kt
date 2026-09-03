@@ -6,7 +6,9 @@ import org.raonpark.backend.comment.repository.TaskCommentRepository
 import org.raonpark.backend.comment.repository.jooq.TaskCommentQueryRepository
 import org.raonpark.backend.common.exceptions.TaskCommentNotFoundException
 import org.raonpark.backend.common.exceptions.TaskNotFoundException
+import org.raonpark.backend.common.exceptions.UserNotFoundException
 import org.raonpark.backend.task.repository.TaskRepository
+import org.raonpark.backend.users.repository.AppUserRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -16,6 +18,7 @@ class TaskCommentService(
     private val taskCommentQueryRepository: TaskCommentQueryRepository,
     private val taskCommentRepository: TaskCommentRepository,
     private val taskRepository: TaskRepository,
+    private val appUserRepository: AppUserRepository,
 ) {
     @Transactional(readOnly = true)
     fun getAllCommentsByTaskId(taskId: UUID) =
@@ -26,6 +29,7 @@ class TaskCommentService(
     @Transactional
     fun saveComment(taskId: UUID, comment: CreateCommentRequest): Comment {
         if(!taskRepository.existsById(taskId)) throw TaskNotFoundException(taskId)
+        if(!appUserRepository.existsById(comment.authorId)) throw UserNotFoundException(comment.authorId)
 
         val id = taskCommentRepository.saveAndFlush(comment.toEntity(taskId)).id
 

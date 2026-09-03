@@ -67,8 +67,6 @@ class GlobalExceptionHandler {
             )
         )
 
-    // 깨진 JSON, body 안의 잘못된 enum 값, body 누락 등.
-    // catch-all 에 두면 500 으로 나가서 클라이언트 잘못을 서버 장애로 오인하게 된다.
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun handleHttpMessageNotReadable(ex: HttpMessageNotReadableException): ResponseEntity<APIError> {
         log.warn { "Malformed request body: ${ex.mostSpecificCause.message}" }
